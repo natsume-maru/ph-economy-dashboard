@@ -107,18 +107,25 @@
 
             <!-- Analogy Toggle Box -->
             <div class="glass-card rounded-2xl p-6 md:p-8 shadow-md border border-slate-200 mb-10">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-slate-200">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-slate-200">
                     <div>
-                        <h3 class="text-xl font-bold text-slate-900">Switch View Analogy</h3>
-                        <p class="text-sm text-slate-500">Toggle between a familiar household view and national economic view.</p>
+                        <h3 class="text-xl font-bold text-slate-900">Understanding Economic Concepts</h3>
+                        <p class="text-sm text-slate-500">Comparing everyday household finances to macro national indicators.</p>
                     </div>
-                    <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200">
-                        <button id="btn-analogy-family" onclick="switchGDPAnalogy('family')" class="px-5 py-2 rounded-lg text-sm font-bold transition shadow-sm bg-white text-phBlue">
-                            <i class="fa-solid fa-house-user mr-1.5"></i> Family Budget
-                        </button>
-                        <button id="btn-analogy-nation" onclick="switchGDPAnalogy('nation')" class="px-5 py-2 rounded-lg text-sm font-bold text-slate-600 hover:text-slate-900 transition">
-                            <i class="fa-solid fa-earth-asia mr-1.5"></i> National Economy
-                        </button>
+
+                    <!-- Toggle Control Container with Built-in Guide Text -->
+                    <div class="flex flex-col items-start md:items-end gap-1.5 w-full md:w-auto">
+                        <span class="text-xs text-slate-500 font-medium flex items-center gap-1">
+                            <i class="fa-solid fa-circle-info text-phBlue"></i> Toggle view:
+                        </span>
+                        <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 w-full md:w-auto">
+                            <button id="btn-analogy-family" onclick="switchGDPAnalogy('family')" class="flex-1 md:flex-none px-5 py-2 rounded-lg text-sm font-bold transition shadow-sm bg-white text-phBlue">
+                                <i class="fa-solid fa-house-user mr-1.5"></i> Family Household View
+                            </button>
+                            <button id="btn-analogy-nation" onclick="switchGDPAnalogy('nation')" class="flex-1 md:flex-none px-5 py-2 rounded-lg text-sm font-bold text-slate-600 hover:text-slate-900 transition">
+                                <i class="fa-solid fa-earth-asia mr-1.5"></i> National Macro View
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -128,7 +135,7 @@
                 </div>
             </div>
 
-            <!-- Interactive Expenditure Formula Formula -->
+            <!-- Interactive Expenditure Formula -->
             <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 md:p-8 text-white shadow-xl">
                 <h3 class="text-lg font-bold text-amber-400 mb-2 uppercase tracking-wide text-xs">How GDP is Calculated (Expenditure Approach)</h3>
                 <p class="text-2xl md:text-3xl font-black mb-6">GDP = <span class="text-sky-300">C</span> + <span class="text-emerald-300">I</span> + <span class="text-purple-300">G</span> + (<span class="text-rose-300">X</span> - <span class="text-amber-300">M</span>)</p>
@@ -167,7 +174,7 @@
                 </div>
             </div>
 
-            <!-- Key Metric Cards Grid (Expanded) -->
+            <!-- Key Metric Cards Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Metric 1: GDP Growth -->
                 <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
@@ -208,7 +215,7 @@
                     </div>
                 </div>
 
-                <!-- Metric 4: Unemployment Rate -->
+                <!-- Metric 4: Labor & Debt -->
                 <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-bold uppercase text-slate-500">Labor & Debt</span>
@@ -336,7 +343,7 @@
             </div>
         </section>
 
-        <!-- NEW SECTION: Personal Inflation Basket Calculator -->
+        <!-- SECTION 5: Personal Inflation Basket Calculator -->
         <section id="inflation-calc" class="scroll-mt-20">
             <div class="text-center max-w-3xl mx-auto mb-10">
                 <span class="text-xs font-bold uppercase tracking-wider text-phBlue bg-blue-50 px-3 py-1 rounded-full border border-blue-100">Step 5: Purchasing Power</span>
@@ -381,7 +388,7 @@
             </div>
         </section>
 
-        <!-- NEW SECTION: Regional Economic Explorer -->
+        <!-- SECTION 6: Regional Economic Explorer -->
         <section id="regional-explorer" class="scroll-mt-20">
             <div class="text-center max-w-3xl mx-auto mb-10">
                 <span class="text-xs font-bold uppercase tracking-wider text-phBlue bg-blue-50 px-3 py-1 rounded-full border border-blue-100">Step 6: Regional Spread</span>
@@ -413,7 +420,7 @@
             </div>
         </section>
 
-        <!-- SECTION 6: What It Means For You -->
+        <!-- SECTION 7: What It Means For You -->
         <section id="you" class="scroll-mt-20">
             <div class="text-center max-w-3xl mx-auto mb-12">
                 <span class="text-xs font-bold uppercase tracking-wider text-phBlue bg-blue-50 px-3 py-1 rounded-full border border-blue-100">Step 7: Everyday Impact</span>
