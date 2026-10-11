@@ -1,19 +1,88 @@
-/* js/config.js */
+/* js/charts.js */
+let currentChartInstance = null;
+let currentChartType = 'bar';
 
-// Asian Development Bank (ADB) & PSA Data Configuration
-const ADB_DATA = {
-  philippines: {
-    gdpGrowth: 6.0,          // ADB Forecast (% annual growth)
-    perCapitaGdpUsd: 3800,   // Per Capita Income Baseline
-    inflationRate: 3.3,      // Inflation Rate (%)
-    unemploymentRate: 4.0,   // Unemployment Rate (%)
-    population: 114,         // Total Population (Millions)
-    laborForce: 52.5,        // Total Active Labor Force (Millions)
-    participationRate: 64.8  // Labor Force Participation Rate (%)
-  },
-  aseanPeers: {
-    labels: ['Philippines', 'Vietnam', 'Indonesia', 'Cambodia', 'Thailand'],
-    growthRates: [6.0, 6.0, 5.0, 5.8, 2.6],
-    perCapitaUsd: [3800, 4300, 4900, 1900, 7200]
-  }
-};
+function initASEANChart() {
+    const canvasEl = document.getElementById('aseanChart');
+    if (!canvasEl) return;
+    const ctx = canvasEl.getContext('2d');
+    
+    const metricKey = document.getElementById('chart-metric-select').value;
+    const dataValues = aseanData[metricKey];
+
+    currentChartInstance = new Chart(ctx, {
+        type: currentChartType,
+        data: {
+            labels: aseanData.countries,
+            datasets: [{
+                label: 'GDP Growth Rate (%)',
+                data: dataValues,
+                backgroundColor: [
+                    '#0038A8',
+                    '#38bdf8',
+                    '#a855f7',
+                    '#f59e0b',
+                    '#10b981'
+                ],
+                borderColor: '#0038A8',
+                borderWidth: currentChartType === 'line' ? 3 : 0,
+                borderRadius: 8,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const metricKey = document.getElementById('chart-metric-select').value;
+                            const unit = metricKey === 'gdpCapita' ? ' USD $' : '%';
+                            return ` ${context.dataset.label}: ${context.raw}${unit}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: '#f1f5f9' }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+}
+
+function updateASEANChart() {
+    if (!currentChartInstance) return;
+    const metricKey = document.getElementById('chart-metric-select').value;
+    const labelsMap = {
+        gdpGrowth: 'GDP Growth Rate (%)',
+        gdpCapita: 'GDP Per Capita (USD $)',
+        inflation: 'Inflation Rate (%)'
+    };
+
+    currentChartInstance.data.datasets[0].data = aseanData[metricKey];
+    currentChartInstance.data.datasets[0].label = labelsMap[metricKey];
+    currentChartInstance.update();
+}
+
+function setChartType(type) {
+    currentChartType = type;
+    document.getElementById('btn-chart-bar').className = type === 'bar' 
+        ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-phBlue text-white' 
+        : 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200';
+    document.getElementById('btn-chart-line').className = type === 'line' 
+        ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-phBlue text-white' 
+        : 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200';
+
+    if (currentChartInstance) {
+        currentChartInstance.destroy();
+    }
+    initASEANChart();
+}
