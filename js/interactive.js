@@ -1,4 +1,6 @@
 /* js/interactive.js */
+
+// 1. Analogy Toggle Switcher
 function switchGDPAnalogy(type) {
     const container = document.getElementById('analogy-container');
     const familyBtn = document.getElementById('btn-analogy-family');
@@ -25,6 +27,7 @@ function switchGDPAnalogy(type) {
     `).join('');
 }
 
+// 2. GDP Growth Simulator Logic
 function calculateSimulatedGDP() {
     const consEl = document.getElementById('range-consumption');
     if (!consEl) return;
@@ -61,12 +64,52 @@ function calculateSimulatedGDP() {
     }
 }
 
+// 3. Basket of Goods Inflation Calculator (Float Textbox Inputs)
+function calculatePersonalInflation() {
+    const foodCost = parseFloat(document.getElementById('spend-food')?.value) || 0;
+    const utilityCost = parseFloat(document.getElementById('spend-utility')?.value) || 0;
+    const transportCost = parseFloat(document.getElementById('spend-transport')?.value) || 0;
+
+    const monthlyTotal = foodCost + utilityCost + transportCost;
+
+    // Weight-adjusted inflation impact estimates (Food ~4.5%, Utilities ~3.0%, Transport ~2.5%)
+    const estimatedIncrease = (foodCost * 0.045) + (utilityCost * 0.030) + (transportCost * 0.025);
+    const newMonthlyTotal = monthlyTotal + estimatedIncrease;
+
+    const currentTotalEl = document.getElementById('calc-current-monthly');
+    const increaseEl = document.getElementById('calc-monthly-increase');
+    const newTotalEl = document.getElementById('calc-new-monthly');
+
+    const fmt = (num) => `₱${num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+    if (currentTotalEl) currentTotalEl.innerText = fmt(monthlyTotal);
+    if (increaseEl) increaseEl.innerText = `+${fmt(estimatedIncrease)} / month`;
+    if (newTotalEl) newTotalEl.innerText = fmt(newMonthlyTotal);
+}
+
+// 4. Regional Economic Explorer
+function updateRegionalInfo() {
+    const selectEl = document.getElementById('region-select');
+    if (!selectEl) return;
+    
+    const selectedIdx = parseInt(selectEl.value);
+    const region = ADB_DATA.regions[selectedIdx];
+
+    const shareEl = document.getElementById('region-share');
+    const driverEl = document.getElementById('region-driver');
+
+    if (shareEl) shareEl.innerText = region.share;
+    if (driverEl) driverEl.innerText = region.driver;
+}
+
 function highlightGDPFormula(code) {
-    // Interactive feedback visual for formula selection
+    // Visual feedback helper
 }
 
 window.addEventListener('DOMContentLoaded', () => {
     switchGDPAnalogy('family');
     initASEANChart();
     calculateSimulatedGDP();
+    calculatePersonalInflation();
+    updateRegionalInfo();
 });
