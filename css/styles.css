@@ -1,10 +1,10 @@
 /* css/styles.css */
 
 :root {
-  --primary: #0038a8;
-  --accent: #ce1126;
-  --yellow: #fcd116;
-  --dark: #0f172a;
+  --primary: #0038a8;     /* PH Blue */
+  --accent: #ce1126;      /* PH Red */
+  --yellow: #fcd116;      /* PH Sun Yellow */
+  --dark: #1e293b;
   --light-bg: #f8fafc;
   --card-bg: #ffffff;
   --border: #e2e8f0;
@@ -15,7 +15,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 body {
@@ -27,40 +27,43 @@ body {
 .header {
   background: linear-gradient(135deg, var(--primary), #002266);
   color: white;
-  padding: 3rem 1.5rem 2rem;
+  padding: 3.5rem 1.5rem 2.5rem;
   text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   margin-bottom: 0.5rem;
   font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .header p {
-  opacity: 0.9;
-  max-width: 650px;
+  opacity: 0.95;
+  max-width: 680px;
   margin: 0 auto;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
 }
 
 .container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2.5rem 1rem;
 }
 
 .section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
 }
 
 .section-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  margin-bottom: 1.2rem;
   color: var(--primary);
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-weight: 700;
 }
 
 .grid {
@@ -78,20 +81,20 @@ body {
 .card {
   background: var(--card-bg);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.75rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   border: 1px solid var(--border);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
 }
 
 .metric-value {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.2rem;
+  font-weight: 800;
   color: var(--primary);
   margin: 0.5rem 0 0.25rem;
 }
@@ -99,27 +102,29 @@ body {
 .metric-sub {
   font-size: 0.85rem;
   color: var(--text-muted);
+  font-weight: 500;
 }
 
 .formula-box {
   background: #eff6ff;
   border-left: 4px solid var(--primary);
-  padding: 1rem;
+  padding: 1.1rem;
   border-radius: 0 8px 8px 0;
   margin-top: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--primary);
+  font-size: 1.05rem;
 }
 
 .slider-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .slider-group label {
   display: flex;
   justify-content: space-between;
   font-weight: 600;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   font-size: 0.95rem;
 }
 
@@ -127,6 +132,9 @@ input[type="range"] {
   width: 100%;
   accent-color: var(--primary);
   cursor: pointer;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
 }
 
 .disclaimer-box {
@@ -136,7 +144,7 @@ input[type="range"] {
   padding: 1.25rem;
   font-size: 0.88rem;
   color: #722ed1;
-  margin-top: 2rem;
+  margin-top: 3rem;
 }
 
 .disclaimer-box h4 {
@@ -145,15 +153,16 @@ input[type="range"] {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  font-size: 1rem;
 }
 
 .footer {
   text-align: center;
-  padding: 2rem;
+  padding: 2.5rem;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   border-top: 1px solid var(--border);
-  margin-top: 2rem;
+  margin-top: 3rem;
 }
 
 .calc-input-group {
@@ -162,27 +171,30 @@ input[type="range"] {
   gap: 1rem;
   margin-bottom: 1.25rem;
   background: #f1f5f9;
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1.1rem;
   border-radius: 8px;
 }
 
 .calc-input-group input[type="number"] {
-  width: 70px;
+  width: 75px;
   padding: 0.4rem 0.6rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: bold;
   border: 1px solid var(--border);
   border-radius: 6px;
   text-align: center;
+  color: var(--primary);
 }
 
 .pill {
   display: inline-block;
-  padding: 0.25rem 0.6rem;
+  padding: 0.25rem 0.7rem;
   background: #e0e7ff;
   color: var(--primary);
   font-size: 0.75rem;
   font-weight: 700;
   border-radius: 12px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
