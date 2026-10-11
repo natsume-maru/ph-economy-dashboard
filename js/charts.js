@@ -13,7 +13,8 @@ function initASEANChart() {
     }
 
     if (currentMode === 'peer') {
-        const metricKey = document.getElementById('chart-metric-select').value;
+        const selectEl = document.getElementById('chart-metric-select');
+        const metricKey = selectEl ? selectEl.value : 'growthRates';
         const dataValues = ADB_DATA.aseanPeers[metricKey];
 
         const labelsMap = {
@@ -21,6 +22,8 @@ function initASEANChart() {
             gdpCapita: 'GDP Per Capita (USD $)',
             inflation: 'Inflation Rate (%)'
         };
+
+        const yAxisTitle = metricKey === 'gdpCapita' ? 'Amount in USD ($)' : 'Percentage Rate (%)';
 
         currentChartInstance = new Chart(ctx, {
             type: currentChartType,
@@ -42,8 +45,10 @@ function initASEANChart() {
                     tension: 0.3
                 }]
             },
-            options: getChartOptions(metricKey === 'gdpCapita' ? ' USD $' : '%')
+            options: getChartOptions(yAxisTitle, metricKey === 'gdpCapita')
         });
+
+        updateChartInsights(metricKey);
     } else {
         // Historical Trend Mode
         currentChartInstance = new Chart(ctx, {
@@ -72,12 +77,14 @@ function initASEANChart() {
                     }
                 ]
             },
-            options: getChartOptions('%')
+            options: getChartOptions('Percentage Rate (%)', false)
         });
+
+        updateChartInsights('historical');
     }
 }
 
-function getChartOptions(unitSuffix) {
+function getChartOptions(yAxisTitle, formatK) {
     return {
         responsive: true,
         maintainAspectRatio: false,
@@ -86,7 +93,10 @@ function getChartOptions(unitSuffix) {
             tooltip: {
                 callbacks: {
                     label: function(context) {
-                        return ` ${context.dataset.label}: ${context.raw}${unitSuffix}`;
+                        const val = context.raw;
+                        return formatK && val >= 1000 
+                            ? ` ${context.dataset.label}: $${(val / 1000).toFixed(1)}k` 
+                            : ` ${context.dataset.label}: ${val}${formatK ? ' USD $' : '%'}`;
                     }
                 }
             }
@@ -94,7 +104,21 @@ function getChartOptions(unitSuffix) {
         scales: {
             y: {
                 beginAtZero: true,
-                grid: { color: '#f1f5f9' }
+                grid: { color: '#f1f5f9' },
+                title: {
+                    display: true,
+                    text: yAxisTitle,
+                    color: '#64748b',
+                    font: { size: 11, weight: 'bold' }
+                },
+                ticks: {
+                    callback: function(value) {
+                        if (formatK && value >= 1000) {
+                            return (value / 1000) + 'k';
+                        }
+                        return value;
+                    }
+                }
             },
             x: {
                 grid: { display: false }
@@ -103,18 +127,47 @@ function getChartOptions(unitSuffix) {
     };
 }
 
+function updateChartInsights(key) {
+    const titleEl = document.getElementById('chart-insight-title');
+    const bodyEl = document.getElementById('chart-insight-body');
+    const badgeEl = document.getElementById('chart-insight-badge');
+
+    if (!titleEl || !bodyEl || !badgeEl) return;
+
+    if (key === 'gdpCapita') {
+        badgeEl.innerText = 'Income Benchmark';
+        titleEl.innerText = 'Per Capita Comparison';
+        bodyEl.innerHTML = 'Thailand leads regional per capita income (~$7.2k USD), while the Philippines (~$3.8k USD) and Vietnam (~$4.3k USD) represent fast-growing mid-tier ASEAN consumer markets.';
+    } else if (key === 'growthRates') {
+        badgeEl.innerText = 'Regional Momentum';
+        titleEl.innerText = 'GDP Growth Leadership';
+        bodyEl.innerHTML = 'The Philippines (5.6%) and Vietnam (5.8%) maintain top-tier growth trajectories in Southeast Asia, driven by strong domestic consumption and services export expansion.';
+    } else if (key === 'inflation') {
+        badgeEl.innerText = 'Price Stability';
+        titleEl.innerText = 'Consumer Price Control';
+        bodyEl.innerHTML = 'At 3.3%, Philippine inflation sits safely within the Central Bank target range (2–4%), comparable to regional peers like Vietnam (3.5%) and Indonesia (2.8%).';
+    } else if (key === 'historical') {
+        badgeEl.innerText = '5-Year Trajectory';
+        titleEl.innerText = 'Post-Pandemic Realignment';
+        bodyEl.innerHTML = 'After sharp post-pandemic growth (7.6% in 2022), PH GDP growth stabilizes at ~5.6–6.0% through 2026 as inflation gradually cools down toward ~3.1%.';
+    }
+}
+
 function updateModeButtons() {
     const peerBtn = document.getElementById('btn-mode-peer');
     const histBtn = document.getElementById('btn-mode-historical');
+    const selectEl = document.getElementById('chart-metric-select');
 
     if (!peerBtn || !histBtn) return;
 
     if (currentMode === 'peer') {
         peerBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-phBlue text-white';
         histBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200';
+        if (selectEl) selectEl.disabled = false;
     } else {
         histBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-phBlue text-white';
         peerBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200';
+        if (selectEl) selectEl.disabled = true;
     }
 }
 
@@ -131,14 +184,7 @@ function showHistoricalTrend() {
 }
 
 function setChartType(type) {
-    if (currentMode === 'historical') return; // Historical forces line chart
+    if (currentMode === 'historical') return;
     currentChartType = type;
-    document.getElementById('btn-chart-bar').className = type === 'bar' 
-        ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-phBlue text-white' 
-        : 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200';
-    document.getElementById('btn-chart-line').className = type === 'line' 
-        ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-phBlue text-white' 
-        : 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200';
-
     initASEANChart();
 }
