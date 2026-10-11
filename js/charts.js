@@ -103,13 +103,30 @@ function getChartOptions(unitSuffix) {
     };
 }
 
+function updateModeButtons() {
+    const peerBtn = document.getElementById('btn-mode-peer');
+    const histBtn = document.getElementById('btn-mode-historical');
+
+    if (!peerBtn || !histBtn) return;
+
+    if (currentMode === 'peer') {
+        peerBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-phBlue text-white';
+        histBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200';
+    } else {
+        histBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-phBlue text-white';
+        peerBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200';
+    }
+}
+
 function updateASEANChart() {
     currentMode = 'peer';
+    updateModeButtons();
     initASEANChart();
 }
 
 function showHistoricalTrend() {
     currentMode = 'historical';
+    updateModeButtons();
     initASEANChart();
 }
 
